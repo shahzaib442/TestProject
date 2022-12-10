@@ -1,6 +1,6 @@
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signInWithPopup, GoogleAuthProvider,FacebookAuthProvider  } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, sendPasswordResetEmail } from "firebase/auth";
 import { auth, provider, provider1 } from './FireBase/FirebaseConfig';
 const App = () => {
   const [email, setemail] = useState('')
@@ -59,6 +59,14 @@ const App = () => {
         console.warn(errorMessage)
       });
   }
+  const forgetpassword = () => {
+    sendPasswordResetEmail(auth, email)
+      .then((result) => {
+        alert("An Email has been sent")
+      }).catch((error) => {
+        alert("An Error occurred")
+      });
+  }
   return (
     <View style={{ marginTop: 20, padding: 20 }}>
       <Text>App</Text>
@@ -68,6 +76,7 @@ const App = () => {
       <Button title='Sign In' onPress={() => SignIn()} />
       <Button title='Google Sign In' onPress={() => SignInWithGoogle()} />
       <Button title='Facebook Sign In' onPress={() => SignInWithfb()} />
+      <Button title='forget password' onPress={() => forgetpassword()} />
       <Button title='Log Out' onPress={() => {
         auth.signOut().then((resp) => {
           console.warn("User Sign Out Successfully")
